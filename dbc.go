@@ -76,7 +76,7 @@ type DbRow struct {
 
 // Scan wraps the call to `sql.Row.Scan()`.
 func (r *DbRow) Scan(args ...interface{}) error {
-	return r.R.Scan(args)
+	return r.R.Scan(args...)
 }
 
 // DbRowV represents the column values in a single row.
@@ -98,12 +98,12 @@ func (st *DbStmt) Close() error {
 
 // Exec wraps the call to `sql.Stmt.Exec()`.
 func (st *DbStmt) Exec(args ...interface{}) (sql.Result, error) {
-	return st.S.Exec(args)
+	return st.S.Exec(args...)
 }
 
 // QueryRow wraps the call to `sql.Stmt.QueryRow` to return a database row.
 func (st *DbStmt) QueryRow(args ...interface{}) Row {
-	return &DbRow{st.S.QueryRow(args)}
+	return &DbRow{st.S.QueryRow(args...)}
 }
 
 // BulkInsert inserts one or more rows.
@@ -142,7 +142,7 @@ func (tx *TxHandle) Prepare(query string) (Statement, error) {
 
 // QueryRow wraps the call to `sql.Tx.QueryRow()` and returns a database row.
 func (tx *TxHandle) QueryRow(query string, args ...interface{}) Row {
-	return &DbRow{tx.T.QueryRow(query, args)}
+	return &DbRow{tx.T.QueryRow(query, args...)}
 }
 
 // Commit wraps the call to `sql.Tx.Commit()`.
