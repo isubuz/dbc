@@ -48,6 +48,7 @@ type Statement interface {
 	Exec(...interface{}) (sql.Result, error)
 	// Query(...interface{}) Rows
 	QueryRow(...interface{}) Row
+	BulkInsert([]DbRowV) error
 }
 
 // Query provides a consise way of representing a SQL query consisting of the
@@ -105,8 +106,8 @@ func (st *DbStmt) QueryRow(args ...interface{}) Row {
 	return &DbRow{st.S.QueryRow(args)}
 }
 
-// BatchInsert inserts one or more rows.
-func (st *DbStmt) BatchInsert(rows []DbRowV) error {
+// BulkInsert inserts one or more rows.
+func (st *DbStmt) BulkInsert(rows []DbRowV) error {
 	for _, r := range rows {
 		if _, err := st.Exec(r.V...); err != nil {
 			return err
